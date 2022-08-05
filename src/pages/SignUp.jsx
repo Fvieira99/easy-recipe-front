@@ -18,6 +18,7 @@ export default function SignUp() {
 		username: "",
 		email: "",
 		password: "",
+		avatar: "",
 	});
 
 	const [showPassword, setShowPassword] = useState(false);
@@ -35,12 +36,12 @@ export default function SignUp() {
 		try {
 			await apiService.signUp(userInfo);
 			setIsLoading(false);
-			setUserInfo({ username: "", email: "", password: "" });
+			setUserInfo({ username: "", email: "", password: "", avatar: "" });
 			navigate("/signin");
 		} catch (error) {
 			console.log(error);
 			setIsLoading(false);
-			setUserInfo({ username: "", email: "", password: "" });
+			setUserInfo({ username: "", email: "", password: "", avatar: "" });
 		}
 	}
 
@@ -57,6 +58,7 @@ export default function SignUp() {
 				<FormInput
 					variant="filled"
 					label="username"
+					type="text"
 					required
 					value={userInfo.username}
 					onChange={(e) =>
@@ -67,10 +69,21 @@ export default function SignUp() {
 				<FormInput
 					disabled={isLoading}
 					variant="filled"
+					type="email"
 					label="email"
 					required
 					value={userInfo.email}
 					onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
+				/>
+				<FormInput
+					disabled={isLoading}
+					variant="filled"
+					label="avatar"
+					placeholder="Avatar url"
+					type="url"
+					required
+					value={userInfo.avatar}
+					onChange={(e) => setUserInfo({ ...userInfo, avatar: e.target.value })}
 				/>
 				<FormInput
 					disabled={isLoading}

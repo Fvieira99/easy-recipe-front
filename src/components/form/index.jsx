@@ -11,7 +11,6 @@ export default function Form({ children, onSubmit }) {
 
 const FormContainer = styled(Box)`
 	width: 90%;
-	height: 50%;
 	${({ theme }) => theme.mixins.flexbox("column", "center", "center", "15px")}
 	border-radius: 10px;
 	background-color: #ffffff;
