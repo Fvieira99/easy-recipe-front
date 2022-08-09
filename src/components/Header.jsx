@@ -11,14 +11,14 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 
-export default function Header({ setIsMenuDrawerOpen }) {
+export default function Header({ setIsMenuDrawerOpen, setIsSearchBarOpen }) {
 	return (
 		<StyledToolBar sx={{ boxShadow: 1 }}>
 			<IconButton color="primary" onClick={() => setIsMenuDrawerOpen(true)}>
 				<MenuIcon />
 			</IconButton>
 			<StyledTypography component="span">EasyEating</StyledTypography>
-			<IconButton color="primary">
+			<IconButton color="primary" onClick={() => setIsSearchBarOpen(true)}>
 				<SearchIcon />
 			</IconButton>
 		</StyledToolBar>

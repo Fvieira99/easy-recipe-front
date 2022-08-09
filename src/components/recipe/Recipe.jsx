@@ -1,9 +1,15 @@
 import { fontSize, styled } from "@mui/system";
 import { Typography, Box, Rating } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-export default function Recipe({ title, avatar, rating }) {
+export default function Recipe({ title, avatar, rating, recipeId, username }) {
+	const navigate = useNavigate();
+
 	return (
-		<Container component="div">
+		<Container
+			component="div"
+			onClick={() => navigate(`/recipes/recipe/${title}/${recipeId}`)}
+		>
 			<RecipeInformation component="div">
 				<UserInfo>
 					<Avatar component="img" src={avatar}></Avatar>
@@ -15,7 +21,7 @@ export default function Recipe({ title, avatar, rating }) {
 							fontWeight: "700",
 						}}
 					>
-						Username
+						{username}
 					</Typography>
 				</UserInfo>
 				<Typography
@@ -40,6 +46,8 @@ const Container = styled(Box)`
 	height: 300px;
 	border-radius: 10px;
 	background-color: ${({ theme }) => theme.palette.primary.main};
+	cursor: pointer;
+	margin-bottom: 30px;
 	${({ theme }) => theme.mixins.flexbox("column", "flex-end", "center", "0px")}
 	&:nth-child(2) {
 		margin-top: 100px;

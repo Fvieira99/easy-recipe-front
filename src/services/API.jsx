@@ -16,8 +16,18 @@ async function getRecipes(pageNumber) {
 	return await API.get(`/recipes?page=${pageNumber}`);
 }
 
+async function getRecipesByName(name) {
+	return await API.get(`/recipes/search?name=${name}`);
+}
+
+async function getRecipeById(recipeId) {
+	return await API.get(`recipes/recipe/${recipeId}`);
+}
+
 export const apiService = {
 	signIn,
 	signUp,
 	getRecipes,
+	getRecipesByName,
+	getRecipeById,
 };
