@@ -26,7 +26,8 @@ const theme = createTheme({
 	},
 	typography: {
 		fontFamily: [
-			"Inter",
+			"'Tiro Gurmukhi'",
+			"Poppins",
 			"BlinkMacSystemFont",
 			'"Segoe UI"',
 			"Roboto",

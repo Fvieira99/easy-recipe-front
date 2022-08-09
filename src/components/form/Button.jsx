@@ -1,6 +1,10 @@
 import { Button, styled } from "@mui/material";
 
-const FormButton = styled(Button)`
+export default function FormButton() {
+	return <StyledButton></StyledButton>;
+}
+
+const StyledButton = styled(Button)`
 	width: 90%;
 	height: 50px;
 	border-radius: 10px;
@@ -9,5 +13,3 @@ const FormButton = styled(Button)`
 	font-size: 15px;
 	text-transform: none;
 `;
-
-export default FormButton;

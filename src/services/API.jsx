@@ -12,7 +12,12 @@ async function signIn(body) {
 	return await API.post("/signin", body);
 }
 
+async function getRecipes(pageNumber) {
+	return await API.get(`/recipes?page=${pageNumber}`);
+}
+
 export const apiService = {
 	signIn,
 	signUp,
+	getRecipes,
 };
