@@ -22,6 +22,8 @@ export default function Dashboard({
 	direction,
 	setIsMenuDrawerOpen,
 	isMenuDrawerOpen,
+	username,
+	avatar,
 }) {
 	const navigate = useNavigate();
 
@@ -34,11 +36,8 @@ export default function Dashboard({
 		>
 			<DrawerHeader>
 				<StyledUserInfoBox component="div">
-					<Avatar
-						src="https://gravatar.com/avatar/5081440c2359c9119ffa9e419d6c4b75?s=400&d=robohash&r=x"
-						alt="Avatar"
-					/>
-					<Typography component="span">Username</Typography>
+					<Avatar src={avatar} alt="Avatar" />
+					<Typography component="span">{username}</Typography>
 				</StyledUserInfoBox>
 				<IconButton onClick={() => setIsMenuDrawerOpen(false)}>
 					<ChevronLeftIcon fontSize="large" />
@@ -59,7 +58,7 @@ export default function Dashboard({
 						<StyledTypography component="span">Profile</StyledTypography>
 					</StyleListItemButton>
 				</ListItem>
-				<ListItem onClick={() => navigate("/")}>
+				<ListItem onClick={() => navigate("/new-recipe")}>
 					<StyleListItemButton>
 						<AddCircleRoundedIcon />
 						<StyledTypography component="span">New Recipe</StyledTypography>

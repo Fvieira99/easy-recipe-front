@@ -20,14 +20,18 @@ export default function SearchBar({ isSearchBarOpen, setIsSearchBarOpen }) {
 
 	const navigate = useNavigate();
 
-	useEffect(async () => {
-		if (debouncedRecipe) {
-			const response = await apiService.getRecipesByName(debouncedRecipe);
-			console.log(response);
-			setRecipes(response.data);
-		} else {
-			setRecipes([]);
+	useEffect(() => {
+		async function fetchData() {
+			if (debouncedRecipe) {
+				const response = await apiService.getRecipesByName(debouncedRecipe);
+				console.log(response);
+				setRecipes(response.data);
+			} else {
+				setRecipes([]);
+			}
 		}
+
+		fetchData();
 	}, [debouncedRecipe]);
 
 	return (
@@ -100,11 +104,3 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 	justifyContent: "flex-start",
 	height: "72px",
 }));
-
-const StyledRecipeBox = styled(Box)`
-	width: 100%;
-	height: 50px;
-	${({ theme }) => theme.mixins.flexbox("row", "start", "center", "0px")}
-	margin-top: 5px;
-	border-radius: 0 0 5px 5px;
-`;

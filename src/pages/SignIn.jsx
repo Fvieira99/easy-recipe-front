@@ -33,13 +33,17 @@ export default function SignIn() {
 	async function login() {
 		try {
 			const { data } = await apiService.signIn(userInfo);
-			localStorage.setItem("token", data.token);
+
+			localStorage.setItem("user", JSON.stringify(data));
+
 			setIsLoading(false);
 			setUserInfo({ email: "", password: "" });
 			navigate("/");
 		} catch (error) {
 			console.log(error);
+
 			setIsLoading(false);
+
 			setUserInfo({ email: "", password: "" });
 		}
 	}
@@ -47,7 +51,7 @@ export default function SignIn() {
 	return (
 		<Wrapper>
 			<Logo component="img" src={logo} />
-			<FormTitle component="h1">Sign In</FormTitle>
+			<FormTitle>Sign In</FormTitle>
 			<Form
 				onSubmit={(e) => {
 					handleSubmit(e);
@@ -85,12 +89,8 @@ export default function SignIn() {
 						),
 					}}
 				/>
-				<FormButton variant="contained" boxShadow={2} type="submit">
-					Login
-				</FormButton>
-				<FormLink component="span" onClick={() => navigate("/")}>
-					Don't have an account? Join Now!
-				</FormLink>
+				<FormButton />
+				<FormLink text="You dont have an account yet? Sign Up!" />
 			</Form>
 		</Wrapper>
 	);

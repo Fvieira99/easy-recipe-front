@@ -1,7 +1,11 @@
 import { Button, styled } from "@mui/material";
 
 export default function FormButton() {
-	return <StyledButton></StyledButton>;
+	return (
+		<StyledButton variant="contained" boxShadow={2} type="submit">
+			Sign In
+		</StyledButton>
+	);
 }
 
 const StyledButton = styled(Button)`

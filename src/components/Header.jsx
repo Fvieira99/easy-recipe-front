@@ -1,12 +1,5 @@
 import { styled } from "@mui/system";
-import {
-	AppBar,
-	Box,
-	Button,
-	IconButton,
-	Toolbar,
-	Typography,
-} from "@mui/material";
+import { IconButton, Toolbar, Typography } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";

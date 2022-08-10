@@ -1,7 +1,7 @@
 import { Typography, styled } from "@mui/material";
 
-export default function FormTitle() {
-	return <StyledTitle></StyledTitle>;
+export default function FormTitle({ title }) {
+	return <StyledTitle component="h1"></StyledTitle>;
 }
 
 const StyledTitle = styled(Typography)`

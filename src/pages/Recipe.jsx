@@ -6,9 +6,13 @@ export default function Recipe() {
 	const [recipe, setRecipe] = useState(null);
 
 	const { recipeId } = useParams();
-	useEffect(async () => {
-		const response = await apiService.getRecipeById(recipeId);
-		setRecipe(response.data);
+	useEffect(() => {
+		async function fetchData() {
+			const response = await apiService.getRecipeById(recipeId);
+			setRecipe(response.data);
+		}
+
+		fetchData();
 	}, []);
 
 	return <h1>{JSON.stringify(recipe)}</h1>;

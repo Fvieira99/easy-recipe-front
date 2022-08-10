@@ -1,5 +1,5 @@
-import { fontSize, styled } from "@mui/system";
-import { Typography, Box, Rating } from "@mui/material";
+import { styled } from "@mui/system";
+import { Typography, Box, Rating, Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 export default function Recipe({ title, avatar, rating, recipeId, username }) {
@@ -12,7 +12,7 @@ export default function Recipe({ title, avatar, rating, recipeId, username }) {
 		>
 			<RecipeInformation component="div">
 				<UserInfo>
-					<Avatar component="img" src={avatar}></Avatar>
+					<StyledAvatar src={avatar} />
 					<Typography
 						component="span"
 						sx={{
@@ -74,9 +74,7 @@ const UserInfo = styled(Box)`
 	${({ theme }) => theme.mixins.flexbox("row", "start", "center", "10px")}
 `;
 
-const Avatar = styled(Box)`
-	border-radius: 50%;
+const StyledAvatar = styled(Avatar)`
 	width: 30px;
 	height: 30px;
-	object-fit: contain;
 `;
