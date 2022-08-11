@@ -12,6 +12,7 @@ import FormLink from "../components/form/Link";
 import FormTitle from "../components/form/Title";
 import { LoadingContext } from "../contexts/LoadingContext";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../contexts/UserContext";
 
 export default function SignIn() {
 	const [userInfo, setUserInfo] = useState({
@@ -22,6 +23,8 @@ export default function SignIn() {
 	const [showPassword, setShowPassword] = useState(false);
 
 	const { isLoading, setIsLoading } = useContext(LoadingContext);
+
+	const { setUser } = useContext(UserContext);
 
 	const navigate = useNavigate();
 
@@ -35,9 +38,11 @@ export default function SignIn() {
 			const { data } = await apiService.signIn(userInfo);
 
 			localStorage.setItem("user", JSON.stringify(data));
+			setUser(JSON.parse(localStorage.getItem("user")));
 
 			setIsLoading(false);
 			setUserInfo({ email: "", password: "" });
+
 			navigate("/");
 		} catch (error) {
 			console.log(error);
@@ -59,6 +64,7 @@ export default function SignIn() {
 				}}
 			>
 				<FormInput
+					type="email"
 					variant="filled"
 					label="email"
 					required
@@ -89,7 +95,9 @@ export default function SignIn() {
 						),
 					}}
 				/>
-				<FormButton />
+				<FormButton type="submit" variant="contained">
+					Sign In
+				</FormButton>
 				<FormLink text="You dont have an account yet? Sign Up!" />
 			</Form>
 		</Wrapper>

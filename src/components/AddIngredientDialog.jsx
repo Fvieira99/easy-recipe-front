@@ -11,7 +11,7 @@ import {
 
 import { useState } from "react";
 
-export default function AddRecipeDialog({
+export default function AddIngredientDialog({
 	isOpen,
 	setIsOpen,
 	options,
@@ -60,9 +60,14 @@ export default function AddRecipeDialog({
 					Select one ingredient and type the quantity of it.
 				</StyledDialogTitle>
 				<StyledDialogContent>
-					<IngredientForm component="form" onSubmit={handleSubmit}>
+					<IngredientForm
+						id="ingredient-form"
+						component="form"
+						onSubmit={handleSubmit}
+						action="add-ingredient"
+					>
 						<TextField
-							required
+							required={true}
 							sx={{ marginTop: "10px", minWidth: "150px" }}
 							select
 							variant="outlined"
@@ -88,7 +93,7 @@ export default function AddRecipeDialog({
 							})}
 						</TextField>
 						<TextField
-							required
+							required={true}
 							type="text"
 							sx={{ margin: "10px 0" }}
 							placeholder="Ingredient Quantity Ex: 200g"
@@ -101,10 +106,18 @@ export default function AddRecipeDialog({
 							}
 						/>
 						<ButtonsContainer>
-							<StyledButton variant="contained" type="submit">
+							<StyledButton
+								variant="contained"
+								type="submit"
+								form="ingredient-form"
+							>
 								Add
 							</StyledButton>
-							<StyledButton variant="outlined" onClick={() => setIsOpen(false)}>
+							<StyledButton
+								type="button"
+								variant="outlined"
+								onClick={() => setIsOpen(false)}
+							>
 								Close
 							</StyledButton>
 						</ButtonsContainer>
@@ -115,7 +128,7 @@ export default function AddRecipeDialog({
 	);
 }
 
-const IngredientForm = styled(Box)``;
+const IngredientForm = styled("form")``;
 
 const StyledDialog = styled(Dialog)`
 	${({ theme }) => theme.mixins.flexbox("column", "center", "center", "10px")}

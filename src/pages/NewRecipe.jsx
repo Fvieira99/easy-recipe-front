@@ -15,14 +15,16 @@ import AddIcon from "@mui/icons-material/Add";
 import Form from "../components/form";
 import FormInput from "../components/form/Input";
 import FormButton from "../components/form/Button";
-import AddRecipeDialog from "../components/AddRecipeDialog";
+import AddIngredientDialog from "../components/AddIngredientDialog";
 import Logo from "../assets/images/cooking_logo.svg";
+import { useNavigate } from "react-router-dom";
 
 export default function NewRecipe() {
 	const [recipeData, setRecipeData] = useState({
 		title: "",
 		mealFor: 0,
 		time: 0,
+		image: "",
 		howToPrepare: "",
 	});
 
@@ -32,15 +34,17 @@ export default function NewRecipe() {
 
 	const [isOpen, setIsOpen] = useState(false);
 
-	const [isDisabled, setIsDisabled] = useState(true);
+	const [isDisabled, setIsDisabled] = useState(false);
 
 	const { token } = useAuth();
 
 	const { isLoading, setIsLoading } = useContext(LoadingContext);
 
+	const navigate = useNavigate();
+
 	useEffect(() => {
 		async function fetchData() {
-			const response = await apiService.getIngredients();
+			const response = await apiService.getIngredients(token);
 			setOptions(response.data.ingredients);
 		}
 
@@ -63,33 +67,85 @@ export default function NewRecipe() {
 		setIngredients([...filteredIngredients]);
 	}
 
+	async function handleAddRecipeSubmit(e) {
+		e.preventDefault();
+		setIsLoading(true);
+		try {
+			const recipe = {
+				...recipeData,
+				ingredients: formatIngredients(),
+			};
+
+			await apiService.createRecipe(recipe, token);
+
+			navigate("/");
+		} catch (error) {
+			console.log(error);
+			alert(error.data.message);
+		}
+	}
+
+	function formatIngredients() {
+		const formatedIngredients = ingredients.map((ingredient) => {
+			return {
+				ingredientId: ingredient.ingredientId,
+				ingredientQty: ingredient.ingredientQty,
+			};
+		});
+		return formatedIngredients;
+	}
+
 	return (
 		<Wrapper>
 			<StyledLogo src={Logo} />
-			<Form>
+			<Form onSubmit={handleAddRecipeSubmit}>
 				<FormInput
 					disabled={isLoading}
 					variant="outlined"
 					label="Title"
-					required
+					required={true}
 					placeholder="recipe title"
 					type="text"
+					value={recipeData.title}
+					onChange={(e) =>
+						setRecipeData({ ...recipeData, title: e.target.value })
+					}
+				/>
+				<FormInput
+					disabled={isLoading}
+					variant="outlined"
+					label="Image URL"
+					required={true}
+					placeholder="https://"
+					type="url"
+					value={recipeData.image}
+					onChange={(e) =>
+						setRecipeData({ ...recipeData, image: e.target.value })
+					}
 				/>
 				<FormInput
 					disabled={isLoading}
 					variant="outlined"
 					label="Meal For"
-					required
+					required={true}
 					type="number"
 					placeholder="number"
+					value={recipeData.mealFor}
+					onChange={(e) =>
+						setRecipeData({ ...recipeData, mealFor: e.target.value })
+					}
 				/>
 				<FormInput
 					disabled={isLoading}
 					variant="outlined"
 					label="Preparation Time"
-					required
+					required={true}
 					type="number"
 					placeholder="time in minutes"
+					value={recipeData.time}
+					onChange={(e) =>
+						setRecipeData({ ...recipeData, time: e.target.value })
+					}
 				/>
 				<FormInput
 					disabled={isLoading}
@@ -97,9 +153,13 @@ export default function NewRecipe() {
 					rows={5}
 					variant="outlined"
 					label="How To Prepare"
-					required
+					required={true}
 					placeholder="Recipe Preparation"
 					type="text"
+					value={recipeData.howToPrepare}
+					onChange={(e) =>
+						setRecipeData({ ...recipeData, howToPrepare: e.target.value })
+					}
 				/>
 				<AddRecipeTitleContainer>
 					<Typography>Ingredients</Typography>
@@ -113,14 +173,6 @@ export default function NewRecipe() {
 						<AddIcon />
 					</Fab>
 				</AddRecipeTitleContainer>
-
-				<AddRecipeDialog
-					isOpen={isOpen}
-					setIsOpen={setIsOpen}
-					options={options}
-					setIngredients={setIngredients}
-					ingredients={ingredients}
-				/>
 				<AddedRecipesContainer>
 					{ingredients.length === 0 ? (
 						<span>Any ingredient was selected yet.</span>
@@ -128,6 +180,7 @@ export default function NewRecipe() {
 						ingredients.map((ingredient, index) => {
 							return (
 								<Chip
+									disabled={isLoading}
 									key={index}
 									label={ingredient.name}
 									onDelete={() => handleDeleteIngredient(index)}
@@ -137,14 +190,24 @@ export default function NewRecipe() {
 					)}
 				</AddedRecipesContainer>
 				<FormButton
+					type="submit"
 					disabled={isDisabled}
 					variant="contained"
-					sx={{ marginBottom: "15px" }}
-					onClick={() => setIsLoading(true)}
+					sx={{
+						marginBottom: "15px",
+						pointerEvents: isLoading ? "none" : "auto",
+					}}
 				>
 					{isLoading ? <CircularProgress color="inherit" /> : "Create Recipe"}
 				</FormButton>
 			</Form>
+			<AddIngredientDialog
+				isOpen={isOpen}
+				setIsOpen={setIsOpen}
+				options={options}
+				setIngredients={setIngredients}
+				ingredients={ingredients}
+			/>
 		</Wrapper>
 	);
 }

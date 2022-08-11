@@ -19,12 +19,11 @@ export default function Main() {
 
 	const navigate = useNavigate();
 
-	const { username, avatar } = useAuth();
+	const { username, avatar, token } = useAuth();
 
 	useEffect(() => {
 		async function fetchData() {
-			const response = await apiService.getRecipes(page);
-			console.log(response.data);
+			const response = await apiService.getRecipes(page, token);
 			setRecipes(response.data);
 		}
 		fetchData();
