@@ -1,9 +1,22 @@
-import { styled, Box, Tab, Tabs, Typography } from "@mui/material";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { apiService } from "../services/API";
+import useAuth from "../hooks/useAuth";
+import { LoadingContext } from "../contexts/LoadingContext";
+
+import {
+	styled,
+	Box,
+	Typography,
+	Fab,
+	Chip,
+	CircularProgress,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import Form from "../components/form";
 import FormInput from "../components/form/Input";
-import useAuth from "../hooks/useAuth";
+import FormButton from "../components/form/Button";
+import AddRecipeDialog from "../components/AddRecipeDialog";
+import Logo from "../assets/images/cooking_logo.svg";
 
 export default function NewRecipe() {
 	const [recipeData, setRecipeData] = useState({
@@ -11,17 +24,51 @@ export default function NewRecipe() {
 		mealFor: 0,
 		time: 0,
 		howToPrepare: "",
-		ingredients: [],
 	});
 
-	const [tabPanelValue, setTabPanelValue] = useState();
+	const [options, setOptions] = useState([]);
 
-	useAuth();
+	const [ingredients, setIngredients] = useState([]);
+
+	const [isOpen, setIsOpen] = useState(false);
+
+	const [isDisabled, setIsDisabled] = useState(true);
+
+	const { token } = useAuth();
+
+	const { isLoading, setIsLoading } = useContext(LoadingContext);
+
+	useEffect(() => {
+		async function fetchData() {
+			const response = await apiService.getIngredients();
+			setOptions(response.data.ingredients);
+		}
+
+		fetchData();
+	}, []);
+
+	useEffect(() => {
+		if (ingredients.length > 0) {
+			setIsDisabled(false);
+		} else {
+			setIsDisabled(true);
+		}
+	}, [ingredients]);
+
+	function handleDeleteIngredient(idx) {
+		const filteredIngredients = ingredients.filter(
+			(ingredient, index) => index !== idx
+		);
+
+		setIngredients([...filteredIngredients]);
+	}
 
 	return (
 		<Wrapper>
+			<StyledLogo src={Logo} />
 			<Form>
 				<FormInput
+					disabled={isLoading}
 					variant="outlined"
 					label="Title"
 					required
@@ -29,6 +76,7 @@ export default function NewRecipe() {
 					type="text"
 				/>
 				<FormInput
+					disabled={isLoading}
 					variant="outlined"
 					label="Meal For"
 					required
@@ -36,6 +84,7 @@ export default function NewRecipe() {
 					placeholder="number"
 				/>
 				<FormInput
+					disabled={isLoading}
 					variant="outlined"
 					label="Preparation Time"
 					required
@@ -43,6 +92,7 @@ export default function NewRecipe() {
 					placeholder="time in minutes"
 				/>
 				<FormInput
+					disabled={isLoading}
 					multiline
 					rows={5}
 					variant="outlined"
@@ -51,65 +101,76 @@ export default function NewRecipe() {
 					placeholder="Recipe Preparation"
 					type="text"
 				/>
-				<TabContainer
-					variant="scrollable"
-					scrollButtons="auto"
-					allowScrollButtonsMobile={true}
+				<AddRecipeTitleContainer>
+					<Typography>Ingredients</Typography>
+					<Fab
+						disabled={isLoading}
+						color="primary"
+						aria-label="add"
+						size="small"
+						onClick={() => setIsOpen(true)}
+					>
+						<AddIcon />
+					</Fab>
+				</AddRecipeTitleContainer>
+
+				<AddRecipeDialog
+					isOpen={isOpen}
+					setIsOpen={setIsOpen}
+					options={options}
+					setIngredients={setIngredients}
+					ingredients={ingredients}
+				/>
+				<AddedRecipesContainer>
+					{ingredients.length === 0 ? (
+						<span>Any ingredient was selected yet.</span>
+					) : (
+						ingredients.map((ingredient, index) => {
+							return (
+								<Chip
+									key={index}
+									label={ingredient.name}
+									onDelete={() => handleDeleteIngredient(index)}
+								/>
+							);
+						})
+					)}
+				</AddedRecipesContainer>
+				<FormButton
+					disabled={isDisabled}
+					variant="contained"
+					sx={{ marginBottom: "15px" }}
+					onClick={() => setIsLoading(true)}
 				>
-					<Tab label="ingredient1"></Tab>
-					<Tab label="ingredient2"></Tab>
-					<Tab label="ingredient3"></Tab>
-					<Tab label="ingredient4"></Tab>
-					<TabPanel value={tabPanelValue} index={0} dir="direction">
-						Item One
-					</TabPanel>
-					<TabPanel value={tabPanelValue} index={1} dir="direction">
-						Item Two
-					</TabPanel>
-					<TabPanel value={tabPanelValue} index={2} dir="direction">
-						Item Three
-					</TabPanel>
-				</TabContainer>
+					{isLoading ? <CircularProgress color="inherit" /> : "Create Recipe"}
+				</FormButton>
 			</Form>
 		</Wrapper>
 	);
 }
 
-function TabPanel(props) {
-	const { children, value, index, ...other } = props;
-
-	return (
-		<div
-			role="tabpanel"
-			hidden={value !== index}
-			id={`full-width-tabpanel-${index}`}
-			aria-labelledby={`full-width-tab-${index}`}
-			{...other}
-		>
-			{value === index && (
-				<Box sx={{ p: 3 }}>
-					<Typography>{children}</Typography>
-				</Box>
-			)}
-		</div>
-	);
-}
-
-function a11yProps(index) {
-	return {
-		id: `full-width-tab-${index}`,
-		"aria-controls": `full-width-tabpanel-${index}`,
-	};
-}
-
 const Wrapper = styled(Box)`
 	width: 100%;
-	height: 100vh;
+	min-height: 100vh;
 	${({ theme }) =>
 		theme.mixins.flexbox("column", "flex-start", "center", "0px")}
 	background-color: ${({ theme }) => theme.palette.secondary.light}
 `;
 
-const TabContainer = styled(Tabs)`
-	width: 100%;
+const AddRecipeTitleContainer = styled("div")`
+	width: 90%;
+	${({ theme }) =>
+		theme.mixins.flexbox("row", "space-between", "center", "20px")}
+`;
+
+const AddedRecipesContainer = styled("div")`
+	width: 90%;
+	${({ theme }) => theme.mixins.flexbox("row", "flex-start", "center", "5px")}
+	margin: 10px 0 10px 0;
+	flex-wrap: wrap;
+`;
+
+const StyledLogo = styled("img")`
+	width: 150px;
+	margin: 15px 0;
 `;

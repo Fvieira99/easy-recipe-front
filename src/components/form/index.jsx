@@ -14,4 +14,5 @@ const FormContainer = styled(Box)`
 	${({ theme }) => theme.mixins.flexbox("column", "center", "center", "15px")}
 	border-radius: 10px;
 	background-color: #ffffff;
+	margin-bottom: 10px;
 `;

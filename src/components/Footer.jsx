@@ -30,9 +30,13 @@ export default function Footer({ page, setPage }) {
 	);
 }
 
-function calculateNumberOfPages(pagesQty) {
+function calculateNumberOfPages(recipesQty) {
+	if (recipesQty === 0) {
+		const numberOfPages = 1;
+		return numberOfPages;
+	}
 	const takeQty = 10;
-	const numberOfPages = Math.ceil(pagesQty / takeQty);
+	const numberOfPages = Math.ceil(recipesQty / takeQty);
 	return numberOfPages;
 }
 

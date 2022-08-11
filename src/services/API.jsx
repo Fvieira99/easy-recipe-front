@@ -28,6 +28,10 @@ async function getRecipesQty() {
 	return await API.get("recipes/quantity");
 }
 
+async function getIngredients() {
+	return await API.get("ingredients");
+}
+
 export const apiService = {
 	signIn,
 	signUp,
@@ -35,4 +39,5 @@ export const apiService = {
 	getRecipesByName,
 	getRecipeById,
 	getRecipesQty,
+	getIngredients,
 };

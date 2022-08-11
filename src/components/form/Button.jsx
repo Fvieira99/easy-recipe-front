@@ -1,14 +1,14 @@
 import { Button, styled } from "@mui/material";
 
-export default function FormButton() {
-	return (
-		<StyledButton variant="contained" boxShadow={2} type="submit">
-			Sign In
-		</StyledButton>
-	);
-}
+// export default function FormButton() {
+// 	return (
+// 		<StyledButton variant="contained" boxShadow={2} type="submit">
+// 			Sign In
+// 		</StyledButton>
+// 	);
+// }
 
-const StyledButton = styled(Button)`
+const FormButton = styled(Button)`
 	width: 90%;
 	height: 50px;
 	border-radius: 10px;
@@ -17,3 +17,5 @@ const StyledButton = styled(Button)`
 	font-size: 15px;
 	text-transform: none;
 `;
+
+export default FormButton;

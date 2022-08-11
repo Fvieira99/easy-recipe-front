@@ -48,7 +48,7 @@ export default function Main() {
 				setIsSearchBarOpen={setIsSearchBarOpen}
 			/>
 			{recipes.length === 0 ? (
-				<h1>Não tem receitas</h1>
+				<h1>Ainda não há receitas criadas</h1>
 			) : (
 				recipes.map((recipe, index) => {
 					return (
@@ -71,4 +71,9 @@ export default function Main() {
 const Wrapper = styled(Box)`
 	width: 100%;
 	${({ theme }) => theme.mixins.flexbox("column", "start", "center", "0px")}
+
+	h1 {
+		margin-top: 100px;
+		margin-bottom: 20px;
+	}
 `;
