@@ -12,18 +12,28 @@ import {
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import useDebounce from "../hooks/useDebounce";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
-export default function SearchBar({ isSearchBarOpen, setIsSearchBarOpen }) {
+export default function SearchDashboard({
+	isSearchBarOpen,
+	setIsSearchBarOpen,
+}) {
 	const [search, setSearch] = useState("");
 	const [recipes, setRecipes] = useState([]);
 	const debouncedRecipe = useDebounce(search, 500);
 
 	const navigate = useNavigate();
 
+	const { token } = useAuth();
+	console.log(token);
+
 	useEffect(() => {
 		async function fetchData() {
 			if (debouncedRecipe) {
-				const response = await apiService.getRecipesByName(debouncedRecipe);
+				const response = await apiService.getRecipesByName(
+					debouncedRecipe,
+					token
+				);
 				console.log(response);
 				setRecipes(response.data);
 			} else {

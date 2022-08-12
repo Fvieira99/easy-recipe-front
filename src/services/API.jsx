@@ -25,16 +25,19 @@ async function getRecipes(pageNumber, token) {
 	return await API.get(`/recipes?page=${pageNumber}`, config);
 }
 
-async function getRecipesByName(name) {
-	return await API.get(`/recipes/search?name=${name}`);
+async function getRecipesByName(name, token) {
+	const config = getConfig(token);
+	return await API.get(`/recipes/search?name=${name}`, config);
 }
 
-async function getRecipeById(recipeId) {
-	return await API.get(`recipes/recipe/${recipeId}`);
+async function getRecipeById(recipeId, token) {
+	const config = getConfig(token);
+	return await API.get(`recipes/recipe/${recipeId}`, config);
 }
 
-async function getRecipesQty() {
-	return await API.get("recipes/quantity");
+async function getRecipesQty(token) {
+	const config = getConfig(token);
+	return await API.get("recipes/quantity", config);
 }
 
 async function getIngredients(token) {

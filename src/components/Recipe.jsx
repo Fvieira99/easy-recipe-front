@@ -2,11 +2,20 @@ import { styled } from "@mui/system";
 import { Typography, Box, Rating, Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-export default function Recipe({ title, avatar, rating, recipeId, username }) {
+export default function Recipe({
+	title,
+	avatar,
+	rating,
+	recipeId,
+	username,
+	image,
+}) {
 	const navigate = useNavigate();
 
 	return (
 		<Container
+			boxShadow={3}
+			image={image}
 			component="div"
 			onClick={() => navigate(`/recipes/recipe/${title}/${recipeId}`)}
 		>
@@ -45,13 +54,16 @@ const Container = styled(Box)`
 	width: 90%;
 	height: 300px;
 	border-radius: 10px;
-	background-color: ${({ theme }) => theme.palette.primary.main};
 	cursor: pointer;
 	margin-bottom: 30px;
 	${({ theme }) => theme.mixins.flexbox("column", "flex-end", "center", "0px")}
 	&:nth-child(2) {
 		margin-top: 100px;
 	}
+	background-image: url(${(props) => props.image});
+	background-repeat: no-repeat;
+	background-size: contain;
+	object-fit: contain;
 `;
 
 const RecipeInformation = styled(Box)`

@@ -17,15 +17,15 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
-export default function Dashboard({
-	direction,
+export default function MenuDashboard({
 	setIsMenuDrawerOpen,
 	isMenuDrawerOpen,
-	username,
-	avatar,
 }) {
 	const navigate = useNavigate();
+
+	const { avatar, username } = useAuth();
 
 	return (
 		<StyledDrawer

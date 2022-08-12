@@ -1,5 +1,6 @@
 import { Pagination, styled } from "@mui/material";
 import { useEffect, useState } from "react";
+import useAuth from "../hooks/useAuth";
 import { apiService } from "../services/API";
 
 export default function Footer({ page, setPage }) {
@@ -9,9 +10,11 @@ export default function Footer({ page, setPage }) {
 		setPage(value);
 	};
 
+	const { token } = useAuth();
+
 	useEffect(() => {
 		async function fetchData() {
-			const response = await apiService.getRecipesQty();
+			const response = await apiService.getRecipesQty(token);
 			const numberOfPages = calculateNumberOfPages(response.data.quantity);
 			setPages(numberOfPages);
 		}
