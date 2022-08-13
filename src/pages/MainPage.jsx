@@ -1,22 +1,21 @@
-import { styled } from "@mui/system";
-import { Box, CircularProgress } from "@mui/material";
-import { useEffect, useState } from "react";
-
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../contexts/UserContext";
 import { apiService } from "../services/API";
+
+import { Box, CircularProgress, styled } from "@mui/material";
 import Recipe from "../components/Recipe";
 import Header from "../components/Header";
-import useAuth from "../hooks/useAuth";
 import Footer from "../components/Footer";
 
-export default function Main() {
+export default function MainPage() {
 	const [recipes, setRecipes] = useState(null);
 	const [page, setPage] = useState(1);
 
-	const { token } = useAuth();
+	const { user } = useContext(UserContext);
 
 	useEffect(() => {
 		async function fetchData() {
-			const response = await apiService.getRecipes(page, token);
+			const response = await apiService.getRecipes(page, user.token);
 			setRecipes(response.data);
 		}
 		fetchData();
@@ -38,7 +37,7 @@ export default function Main() {
 							title={recipe.title}
 							avatar={recipe.user.avatar}
 							username={recipe.user.username}
-							rating={recipe.ratings}
+							rating={recipe.ratings.ratingAVG}
 						/>
 					);
 				})

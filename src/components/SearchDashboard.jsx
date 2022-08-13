@@ -1,5 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { apiService } from "../services/API";
+import { UserContext } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
+import useDebounce from "../hooks/useDebounce";
+
 import {
 	Divider,
 	Drawer,
@@ -10,9 +14,6 @@ import {
 	Chip,
 } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import useDebounce from "../hooks/useDebounce";
-import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 
 export default function SearchDashboard({
 	isSearchBarOpen,
@@ -24,15 +25,14 @@ export default function SearchDashboard({
 
 	const navigate = useNavigate();
 
-	const { token } = useAuth();
-	console.log(token);
+	const { user } = useContext(UserContext);
 
 	useEffect(() => {
 		async function fetchData() {
 			if (debouncedRecipe) {
 				const response = await apiService.getRecipesByName(
 					debouncedRecipe,
-					token
+					user.token
 				);
 				console.log(response);
 				setRecipes(response.data);
@@ -70,9 +70,7 @@ export default function SearchDashboard({
 				{recipes.length > 0 ? (
 					recipes.map((recipe, index) => (
 						<Chip
-							onClick={() =>
-								navigate(`/recipes/recipe/${recipe.title}/${recipe.id}`)
-							}
+							onClick={() => navigate(`/recipes/recipe/${recipe.id}`)}
 							key={index}
 							label={recipe.title}
 							variant="outlined"

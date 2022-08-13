@@ -5,11 +5,11 @@ import { useContext, useState } from "react";
 
 import { apiService } from "../services/API";
 import logo from "../assets/images/auth.svg";
-import Form from "../components/form/index";
-import FormInput from "../components/form/Input";
-import FormButton from "../components/form/Button";
-import FormLink from "../components/form/Link";
-import FormTitle from "../components/form/Title";
+import Form from "../components/Form/index";
+import FormInput from "../components/Form/Input";
+import FormButton from "../components/Form/Button";
+import FormLink from "../components/Form/Link";
+import FormTitle from "../components/Form/Title";
 import { LoadingContext } from "../contexts/LoadingContext";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
@@ -98,7 +98,7 @@ export default function SignIn() {
 				<FormButton type="submit" variant="contained">
 					Sign In
 				</FormButton>
-				<FormLink text="You dont have an account yet? Sign Up!" />
+				<FormLink text="You dont have an account yet? Sign Up!" url="/" />
 			</Form>
 		</Wrapper>
 	);

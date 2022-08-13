@@ -1,16 +1,19 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/system";
 import { LoadingProvider } from "./contexts/LoadingContext";
+import { UserProvider } from "./contexts/UserContext";
 import theme from "./themes/Theme";
 
-import SignUp from "./pages/SignUp";
-import SignIn from "./pages/SignIn";
 import "../src/assets/css/reset.css";
 import "../src/assets/css/styles.css";
-import Main from "./pages/Main";
-import Recipe from "./pages/Recipe";
-import NewRecipe from "./pages/NewRecipe";
-import { UserProvider } from "./contexts/UserContext";
+
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import MainPage from "./pages/MainPage";
+import RecipePage from "./pages/RecipePage";
+import NewRecipePage from "./pages/NewRecipePage";
+import ProfilePage from "./pages/ProfilePage";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 
 export default function App() {
 	return (
@@ -19,15 +22,41 @@ export default function App() {
 				<UserProvider>
 					<BrowserRouter>
 						<Routes>
-							<Route path="/signup" element={<SignUp />} />
+							<Route path="/" element={<SignUp />} />
 							<Route path="/signin" element={<SignIn />} />
 
-							<Route path="/" element={<Main />} />
 							<Route
-								path="/recipes/recipe/:title/:recipeId"
-								element={<Recipe />}
+								path="/main"
+								element={
+									<PrivateRoute>
+										<MainPage />
+									</PrivateRoute>
+								}
 							/>
-							<Route path="/new-recipe" element={<NewRecipe />} />
+							<Route
+								path="/recipes/recipe/:recipeId"
+								element={
+									<PrivateRoute>
+										<RecipePage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path="/new-recipe"
+								element={
+									<PrivateRoute>
+										<NewRecipePage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path="/profile/:userId"
+								element={
+									<PrivateRoute>
+										<ProfilePage />
+									</PrivateRoute>
+								}
+							/>
 						</Routes>
 					</BrowserRouter>
 				</UserProvider>

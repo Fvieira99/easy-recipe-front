@@ -7,7 +7,7 @@ function UserProvider({ children }) {
 
 	function logout() {
 		localStorage.clear("user");
-		setUser(JSON.parse(localStorage.getItem("user")));
+		setUser(JSON.parse(JSON.parse(localStorage.getItem("user"))));
 	}
 
 	return (

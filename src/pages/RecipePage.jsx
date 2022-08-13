@@ -6,7 +6,6 @@ import {
 	Typography,
 	Avatar,
 	Chip,
-	List,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -15,9 +14,18 @@ import { apiService } from "../services/API";
 
 import Header from "../components/Header";
 import Ingredient from "../components/Ingredient";
+import AddRating from "../components/Recipe/AddRating";
+import RecipeRating from "../components/Recipe/RecipeRating";
+import AlertDialog from "../components/AlertDialog";
 
-export default function Recipe() {
+export default function RecipePage() {
 	const [recipe, setRecipe] = useState(null);
+
+	const [isAlertOpen, setIsAlertOpen] = useState(false);
+
+	const [deleteRatingId, setDeleteRatingId] = useState(null);
+
+	const [alreadyHasRating, setAlreadyHasRating] = useState(false);
 
 	const [chips, setChips] = useState({
 		title: "",
@@ -26,9 +34,7 @@ export default function Recipe() {
 		ratingsCount: "",
 	});
 
-	console.log(recipe);
-
-	const { token } = useAuth();
+	const { token, userId } = useAuth();
 
 	const { recipeId } = useParams();
 
@@ -52,6 +58,18 @@ export default function Recipe() {
 		}
 	}, [recipe]);
 
+	useEffect(() => {
+		if (recipe) {
+			const userRating = recipe.ratings.recipeRatings.filter(
+				(rating) => rating.user.id === userId
+			);
+
+			if (userRating.length > 0) {
+				setAlreadyHasRating(true);
+			}
+		}
+	}, [recipe]);
+
 	return (
 		<Wrapper>
 			<Header />
@@ -65,15 +83,15 @@ export default function Recipe() {
 						<Chip label={chips.mealFor} />
 						<Chip label={chips.time} />
 					</StyledTitle>
-					<RecipeRating>
+					<RecipeRatingContainer>
 						<Rating
 							readOnly
-							defaultValue={recipe.ratings.ratingAVG}
+							value={recipe.ratings.ratingAVG}
 							precision={0.5}
 							sx={{ fontSize: "20px" }}
 						/>
 						<Chip label={chips.ratingsCount} />
-					</RecipeRating>
+					</RecipeRatingContainer>
 					<RecipeOwnerContainter>
 						<Avatar src={recipe.user.avatar} />
 						<Typography
@@ -88,7 +106,7 @@ export default function Recipe() {
 							Criado por: @{recipe.user.username}
 						</Typography>
 					</RecipeOwnerContainter>
-					<ListContainer boxShadow={3}>
+					<RecipeContentContainer boxShadow={3}>
 						<StyledList>
 							<Typography sx={{ margin: "15px 0" }}>Ingredients</Typography>
 							{recipe.recipe_ingredient.map((ingredient, index) => {
@@ -101,19 +119,47 @@ export default function Recipe() {
 								);
 							})}
 						</StyledList>
-					</ListContainer>
-					<ListContainer boxShadow={3}>
+					</RecipeContentContainer>
+					<RecipeContentContainer boxShadow={3}>
 						<StyledList>
 							<Typography sx={{ margin: "15px 0" }}>How To Prepare</Typography>
+
 							<Typography
 								sx={{ fontSize: "15px", width: "90%", marginBottom: "20px" }}
 							>
 								{recipe.howToPrepare}
 							</Typography>
 						</StyledList>
-					</ListContainer>
+					</RecipeContentContainer>
+
+					<AddRating
+						recipeId={recipe.id}
+						setRecipe={setRecipe}
+						alreadyHasRating={alreadyHasRating}
+					/>
+
+					{recipe.ratings.recipeRatings.map((rating, index) => {
+						return (
+							<RecipeRating
+								setIsAlertOpen={setIsAlertOpen}
+								key={index}
+								user={rating.user}
+								recipeRating={rating.rating}
+								comment={rating.comment}
+								ratingId={rating.id}
+								setDeleteRatingId={setDeleteRatingId}
+							/>
+						);
+					})}
 				</>
 			)}
+			<AlertDialog
+				recipeId={recipeId}
+				setRecipe={setRecipe}
+				isAlertOpen={isAlertOpen}
+				setIsAlertOpen={setIsAlertOpen}
+				deleteRatingId={deleteRatingId}
+			/>
 		</Wrapper>
 	);
 }
@@ -140,7 +186,7 @@ const StyledTitle = styled(Box)`
 	${({ theme }) => theme.mixins.flexbox("row", "flex-start", "center", "10px")}
 `;
 
-const RecipeRating = styled(Box)`
+const RecipeRatingContainer = styled(Box)`
 	${({ theme }) => theme.mixins.flexbox("row", "flex-start", "center", "10px")}
 	width: 90%;
 	margin-top: 20px;
@@ -156,7 +202,7 @@ const StyledList = styled("list")`
 	width: 90%;
 `;
 
-const ListContainer = styled(Box)`
+const RecipeContentContainer = styled(Box)`
 	width: 90%;
 	${({ theme }) => theme.mixins.flexbox("column", "center", "center", "0px")}
 	background-color: #ffffff;

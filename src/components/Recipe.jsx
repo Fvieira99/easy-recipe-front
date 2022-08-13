@@ -17,7 +17,7 @@ export default function Recipe({
 			boxShadow={3}
 			image={image}
 			component="div"
-			onClick={() => navigate(`/recipes/recipe/${title}/${recipeId}`)}
+			onClick={() => navigate(`/recipes/recipe/${recipeId}`)}
 		>
 			<RecipeInformation component="div">
 				<UserInfo>
@@ -62,8 +62,7 @@ const Container = styled(Box)`
 	}
 	background-image: url(${(props) => props.image});
 	background-repeat: no-repeat;
-	background-size: contain;
-	object-fit: contain;
+	background-size: cover;
 `;
 
 const RecipeInformation = styled(Box)`

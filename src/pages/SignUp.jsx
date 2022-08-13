@@ -1,17 +1,17 @@
 import { InputAdornment, IconButton, Box, styled } from "@mui/material";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useContext, useState } from "react";
-
-import { apiService } from "../services/API";
-import logo from "../assets/images/auth.svg";
-import Form from "../components/form/index";
-import FormInput from "../components/form/Input";
-import FormButton from "../components/form/Button";
-import FormLink from "../components/form/Link";
-import FormTitle from "../components/form/Title";
 import { LoadingContext } from "../contexts/LoadingContext";
 import { useNavigate } from "react-router-dom";
+import { apiService } from "../services/API";
+
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import logo from "../assets/images/auth.svg";
+import Form from "../components/Form/index";
+import FormInput from "../components/Form/Input";
+import FormButton from "../components/Form/Button";
+import FormLink from "../components/Form/Link";
+import FormTitle from "../components/Form/Title";
 
 export default function SignUp() {
 	const [userInfo, setUserInfo] = useState({
@@ -113,9 +113,7 @@ export default function SignUp() {
 				<FormButton variant="contained" boxShadow={2} type="submit">
 					Create Account
 				</FormButton>
-				<FormLink component="span" onClick={() => navigate("/signin")}>
-					Already Have an Account? Sign In!
-				</FormLink>
+				<FormLink text="Already Have an Account? Sign In!" url="/signin" />
 			</Form>
 		</Wrapper>
 	);

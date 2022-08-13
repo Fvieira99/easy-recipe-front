@@ -11,7 +11,6 @@ export default function useAuth() {
 
 	if (!user) {
 		alert("You are being redirected");
-		navigate("/signin");
 	}
 
 	return user;

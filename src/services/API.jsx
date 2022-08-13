@@ -50,13 +50,31 @@ async function createRecipe(recipe, token) {
 	await API.post("/recipes", recipe, config);
 }
 
+async function createRating(rating, token) {
+	const config = getConfig(token);
+	await API.post("/ratings", rating, config);
+}
+
+async function deleteRating(ratingId, token) {
+	const config = getConfig(token);
+	await API.delete(`/ratings/${ratingId}`, config);
+}
+
+async function getUserRecipes(token) {
+	const config = getConfig(token);
+	return await API.get(`/profile/recipes`, config);
+}
+
 export const apiService = {
 	signIn,
 	signUp,
 	getRecipes,
 	getRecipesByName,
 	getRecipeById,
+	getUserRecipes,
 	getRecipesQty,
 	getIngredients,
 	createRecipe,
+	createRating,
+	deleteRating,
 };

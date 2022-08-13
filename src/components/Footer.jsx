@@ -24,8 +24,8 @@ export default function Footer({ page, setPage }) {
 
 	return (
 		<StylePagination
-			defaultChecked="1"
-			defaultPage="1"
+			defaultChecked={1}
+			defaultPage={1}
 			count={pages}
 			color="primary"
 			onChange={handleChange}

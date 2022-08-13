@@ -1,3 +1,7 @@
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
+
 import {
 	Drawer,
 	Divider,
@@ -6,8 +10,8 @@ import {
 	ListItemButton,
 	Box,
 	Avatar,
+	styled,
 } from "@mui/material";
-
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ListItem from "@mui/material/ListItem";
@@ -15,9 +19,6 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
-import { styled } from "@mui/system";
-import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 
 export default function MenuDashboard({
 	setIsMenuDrawerOpen,
@@ -25,7 +26,14 @@ export default function MenuDashboard({
 }) {
 	const navigate = useNavigate();
 
-	const { avatar, username } = useAuth();
+	const { user } = useContext(UserContext);
+
+	const { logout } = useContext(UserContext);
+
+	function handleLogout() {
+		logout();
+		navigate("/");
+	}
 
 	return (
 		<StyledDrawer
@@ -36,8 +44,8 @@ export default function MenuDashboard({
 		>
 			<DrawerHeader>
 				<StyledUserInfoBox component="div">
-					<Avatar src={avatar} alt="Avatar" />
-					<Typography component="span">{username}</Typography>
+					<Avatar src={user.avatar} alt="Avatar" />
+					<Typography component="span">{user.username}</Typography>
 				</StyledUserInfoBox>
 				<IconButton onClick={() => setIsMenuDrawerOpen(false)}>
 					<ChevronLeftIcon fontSize="large" />
@@ -46,13 +54,13 @@ export default function MenuDashboard({
 			<Divider />
 
 			<List sx={{ width: "250px" }}>
-				<ListItem onClick={() => navigate("/")}>
+				<ListItem onClick={() => navigate("/main")}>
 					<StyleListItemButton>
 						<HomeRoundedIcon />
 						<StyledTypography component="span">Home</StyledTypography>
 					</StyleListItemButton>
 				</ListItem>
-				<ListItem onClick={() => navigate("/")}>
+				<ListItem onClick={() => navigate(`/profile/${user.userId}`)}>
 					<StyleListItemButton>
 						<PersonRoundedIcon />
 						<StyledTypography component="span">Profile</StyledTypography>
@@ -64,7 +72,7 @@ export default function MenuDashboard({
 						<StyledTypography component="span">New Recipe</StyledTypography>
 					</StyleListItemButton>
 				</ListItem>
-				<ListItem onClick={() => navigate("/")}>
+				<ListItem onClick={handleLogout}>
 					<StyleListItemButton>
 						<LogoutRoundedIcon />
 						<StyledTypography component="span">Logout</StyledTypography>

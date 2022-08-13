@@ -1,7 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import { apiService } from "../services/API";
-import useAuth from "../hooks/useAuth";
 import { LoadingContext } from "../contexts/LoadingContext";
+import { UserContext } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 import {
 	styled,
@@ -12,14 +13,14 @@ import {
 	CircularProgress,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import Form from "../components/form";
-import FormInput from "../components/form/Input";
-import FormButton from "../components/form/Button";
+import Form from "../components/Form";
+import FormInput from "../components/Form/Input";
+import FormButton from "../components/Form/Button";
 import AddIngredientDialog from "../components/AddIngredientDialog";
 import Logo from "../assets/images/cooking_logo.svg";
-import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
 
-export default function NewRecipe() {
+export default function NewRecipePage() {
 	const [recipeData, setRecipeData] = useState({
 		title: "",
 		mealFor: 0,
@@ -36,7 +37,7 @@ export default function NewRecipe() {
 
 	const [isDisabled, setIsDisabled] = useState(false);
 
-	const { token } = useAuth();
+	const { user } = useContext(UserContext);
 
 	const { isLoading, setIsLoading } = useContext(LoadingContext);
 
@@ -44,7 +45,7 @@ export default function NewRecipe() {
 
 	useEffect(() => {
 		async function fetchData() {
-			const response = await apiService.getIngredients(token);
+			const response = await apiService.getIngredients(user.token);
 			setOptions(response.data.ingredients);
 		}
 
@@ -76,10 +77,12 @@ export default function NewRecipe() {
 				ingredients: formatIngredients(),
 			};
 
-			await apiService.createRecipe(recipe, token);
+			await apiService.createRecipe(recipe, user.token);
+			setIsLoading(false);
 
 			navigate("/");
 		} catch (error) {
+			setIsLoading(false);
 			console.log(error);
 			alert(error.data.message);
 		}
@@ -97,6 +100,7 @@ export default function NewRecipe() {
 
 	return (
 		<Wrapper>
+			<Header />
 			<StyledLogo src={Logo} />
 			<Form onSubmit={handleAddRecipeSubmit}>
 				<FormInput
@@ -235,5 +239,5 @@ const AddedRecipesContainer = styled("div")`
 
 const StyledLogo = styled("img")`
 	width: 150px;
-	margin: 15px 0;
+	margin: 100px 0 15px 0;
 `;
