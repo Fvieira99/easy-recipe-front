@@ -16,14 +16,10 @@ import Header from "../components/Header";
 import Ingredient from "../components/Ingredient";
 import AddRating from "../components/Recipe/AddRating";
 import RecipeRating from "../components/Recipe/RecipeRating";
-import AlertDialog from "../components/AlertDialog";
+import AlertRatingDialog from "../components/AlertRatingDialog";
 
 export default function RecipePage() {
 	const [recipe, setRecipe] = useState(null);
-
-	const [isAlertOpen, setIsAlertOpen] = useState(false);
-
-	const [deleteRatingId, setDeleteRatingId] = useState(null);
 
 	const [alreadyHasRating, setAlreadyHasRating] = useState(false);
 
@@ -141,25 +137,17 @@ export default function RecipePage() {
 					{recipe.ratings.recipeRatings.map((rating, index) => {
 						return (
 							<RecipeRating
-								setIsAlertOpen={setIsAlertOpen}
 								key={index}
 								user={rating.user}
 								recipeRating={rating.rating}
 								comment={rating.comment}
 								ratingId={rating.id}
-								setDeleteRatingId={setDeleteRatingId}
 							/>
 						);
 					})}
 				</>
 			)}
-			<AlertDialog
-				recipeId={recipeId}
-				setRecipe={setRecipe}
-				isAlertOpen={isAlertOpen}
-				setIsAlertOpen={setIsAlertOpen}
-				deleteRatingId={deleteRatingId}
-			/>
+			<AlertRatingDialog recipeId={recipeId} setRecipe={setRecipe} />
 		</Wrapper>
 	);
 }

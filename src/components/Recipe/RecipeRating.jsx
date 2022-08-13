@@ -1,20 +1,25 @@
 import { Avatar, Box, Chip, Rating, styled, Typography } from "@mui/material";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import useAuth from "../../hooks/useAuth";
+
 import { useContext } from "react";
-import { LoadingContext } from "../../contexts/LoadingContext";
+import { UserContext } from "../../contexts/UserContext";
+import { AlertContext } from "../../contexts/AlertContext";
+import { DeleteContext } from "../../contexts/DeleteContext";
 
 export default function RecipeRating({
 	user,
 	recipeRating,
 	comment,
-	setIsAlertOpen,
-	setDeleteRatingId,
+
 	ratingId,
 }) {
-	const { userId } = useAuth();
+	const {
+		user: { userId },
+	} = useContext(UserContext);
 
-	const { isLoading, setIsLoading } = useContext(LoadingContext);
+	const { setIsAlertOpen } = useContext(AlertContext);
+
+	const { setDeleteEntityId } = useContext(DeleteContext);
 
 	return (
 		<Wrapper component="div" boxShadow={3}>
@@ -32,7 +37,7 @@ export default function RecipeRating({
 					<DeleteRoundedIcon
 						onClick={() => {
 							setIsAlertOpen(true);
-							setDeleteRatingId(ratingId);
+							setDeleteEntityId(ratingId);
 						}}
 					/>
 				) : (

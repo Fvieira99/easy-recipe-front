@@ -1,8 +1,14 @@
-import { styled } from "@mui/system";
-import { Typography, Box, Rating, Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
+
+import { styled, Typography, Box, Rating, Avatar } from "@mui/material";
+import { DeleteRounded } from "@mui/icons-material";
+import { AlertContext } from "../contexts/AlertContext";
+import { DeleteContext } from "../contexts/DeleteContext";
 
 export default function Recipe({
+	userId,
 	title,
 	avatar,
 	rating,
@@ -12,52 +18,76 @@ export default function Recipe({
 }) {
 	const navigate = useNavigate();
 
+	const { user } = useContext(UserContext);
+
+	const { setIsAlertOpen } = useContext(AlertContext);
+
+	const { setDeleteEntityId } = useContext(DeleteContext);
+
 	return (
-		<Container
-			boxShadow={3}
-			image={image}
-			component="div"
-			onClick={() => navigate(`/recipes/recipe/${recipeId}`)}
-		>
-			<RecipeInformation component="div">
-				<UserInfo>
-					<StyledAvatar src={avatar} />
+		<Wrapper>
+			{userId && userId === user.userId ? (
+				<DeleteRounded
+					onClick={() => {
+						setIsAlertOpen(true);
+						setDeleteEntityId(recipeId);
+					}}
+				/>
+			) : (
+				<></>
+			)}
+			<Container
+				boxShadow={3}
+				image={image}
+				component="div"
+				onClick={() => navigate(`/recipes/recipe/${recipeId}`)}
+			>
+				<RecipeInformation component="div">
+					<UserInfo>
+						<StyledAvatar src={avatar} />
+						<Typography
+							component="span"
+							sx={{
+								textDecoration: "underline",
+								cursor: "pointer",
+								fontWeight: "700",
+							}}
+						>
+							{username}
+						</Typography>
+					</UserInfo>
 					<Typography
 						component="span"
-						sx={{
-							textDecoration: "underline",
-							cursor: "pointer",
-							fontWeight: "700",
-						}}
+						sx={{ width: "90%", fontSize: "15px", fontWeight: "500" }}
 					>
-						{username}
+						{title}
 					</Typography>
-				</UserInfo>
-				<Typography
-					component="span"
-					sx={{ width: "90%", fontSize: "15px", fontWeight: "500" }}
-				>
-					{title}
-				</Typography>
-				<Rating
-					readOnly
-					defaultValue={rating}
-					precision={0.5}
-					sx={{ width: "90%", fontSize: "18px" }}
-				/>
-			</RecipeInformation>
-		</Container>
+					<Rating
+						readOnly
+						defaultValue={rating}
+						precision={0.5}
+						sx={{ width: "90%", fontSize: "18px" }}
+					/>
+				</RecipeInformation>
+			</Container>
+		</Wrapper>
 	);
 }
 
-const Container = styled(Box)`
+const Wrapper = styled(Box)`
 	width: 90%;
+	${({ theme }) =>
+		theme.mixins.flexbox("column", "center", "flex-start", "0px")};
+`;
+
+const Container = styled(Box)`
+	width: 100%;
 	height: 300px;
 	border-radius: 10px;
 	cursor: pointer;
 	margin-bottom: 30px;
 	${({ theme }) => theme.mixins.flexbox("column", "flex-end", "center", "0px")}
-	&:nth-child(2) {
+	&:nth-child(3) {
 		margin-top: 100px;
 	}
 	background-image: url(${(props) => props.image});

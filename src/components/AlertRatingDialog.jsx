@@ -5,36 +5,44 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { LoadingContext } from "../contexts/LoadingContext";
-import { apiService } from "../services/API";
-import useAuth from "../hooks/useAuth";
 import { CircularProgress } from "@mui/material";
 
-export default function AlertDialog({
-	isAlertOpen,
-	setIsAlertOpen,
-	deleteRatingId,
-	recipeId,
-	setRecipe,
-}) {
+import { LoadingContext } from "../contexts/LoadingContext";
+import { apiService } from "../services/API";
+import { UserContext } from "../contexts/UserContext";
+import { AlertContext } from "../contexts/AlertContext";
+import { DeleteContext } from "../contexts/DeleteContext";
+
+export default function AlertRatingDialog({ recipeId, setRecipe }) {
 	const { isLoading, setIsLoading } = React.useContext(LoadingContext);
-	const { token } = useAuth();
+
+	const { user } = React.useContext(UserContext);
+
+	const { isAlertOpen, setIsAlertOpen } = React.useContext(AlertContext);
+
+	const { deleteEntityId, setDeleteEntityId } = React.useContext(DeleteContext);
 
 	const handleClose = () => {
 		setIsAlertOpen(false);
+		setDeleteEntityId(null);
 	};
 
 	async function handleDelete() {
 		setIsLoading(true);
 		try {
-			await apiService.deleteRating(deleteRatingId, token);
-			setIsLoading(false);
-			handleClose();
+			if (deleteEntityId !== null) {
+				await apiService.deleteRating(deleteEntityId, user.token);
 
-			const response = await apiService.getRecipeById(recipeId, token);
-			setRecipe(response.data);
+				setDeleteEntityId(null);
+				setIsLoading(false);
+				handleClose();
+
+				const response = await apiService.getRecipeById(recipeId, user.token);
+				setRecipe(response.data);
+			}
 		} catch (error) {
 			alert(`${error.response.statusText} ${error.response.data}`);
+			setDeleteEntityId(setDeleteEntityId);
 			setIsLoading(false);
 			handleClose();
 		}

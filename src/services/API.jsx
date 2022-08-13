@@ -65,6 +65,11 @@ async function getUserRecipes(token) {
 	return await API.get(`/profile/recipes`, config);
 }
 
+async function deleteRecipe(recipeId, token) {
+	const config = getConfig(token);
+	await API.delete(`/recipes/recipe/${recipeId}`, config);
+}
+
 export const apiService = {
 	signIn,
 	signUp,
@@ -77,4 +82,5 @@ export const apiService = {
 	createRecipe,
 	createRating,
 	deleteRating,
+	deleteRecipe,
 };
