@@ -35,12 +35,19 @@ export default function SignUp() {
 	async function createUser() {
 		try {
 			await apiService.signUp(userInfo);
+
 			setIsLoading(false);
+
 			setUserInfo({ username: "", email: "", password: "", avatar: "" });
+
 			navigate("/signin");
 		} catch (error) {
 			console.log(error);
+
+			alert(`${error.response.statusText} ${error.response.data}`);
+
 			setIsLoading(false);
+
 			setUserInfo({ username: "", email: "", password: "", avatar: "" });
 		}
 	}

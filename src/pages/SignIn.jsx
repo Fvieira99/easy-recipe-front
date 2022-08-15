@@ -43,9 +43,11 @@ export default function SignIn() {
 			setIsLoading(false);
 			setUserInfo({ email: "", password: "" });
 
-			navigate("/");
+			navigate("/main");
 		} catch (error) {
 			console.log(error);
+
+			alert(`${error.response.statusText} ${error.response.data}`);
 
 			setIsLoading(false);
 
