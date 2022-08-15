@@ -172,18 +172,30 @@ const StyledTitle = styled(Box)`
 	font-weight: 700;
 	margin-top: 20px;
 	${({ theme }) => theme.mixins.flexbox("row", "flex-start", "center", "10px")}
+
+	@media (min-width: 1000px) {
+		${({ theme }) => theme.mixins.flexbox("row", "center", "center", "30px")}
+	}
 `;
 
 const RecipeRatingContainer = styled(Box)`
 	${({ theme }) => theme.mixins.flexbox("row", "flex-start", "center", "10px")}
 	width: 90%;
 	margin-top: 20px;
+
+	@media (min-width: 1000px) {
+		${({ theme }) => theme.mixins.flexbox("row", "center", "center", "30px")}
+	}
 `;
 
 const RecipeOwnerContainter = styled(Box)`
 	${({ theme }) => theme.mixins.flexbox("row", "flex-start", "center", "10px")}
 	width: 90%;
 	margin: 20px 0;
+
+	@media (min-width: 1000px) {
+		${({ theme }) => theme.mixins.flexbox("row", "center", "center", "30px")}
+	}
 `;
 
 const StyledList = styled("list")`

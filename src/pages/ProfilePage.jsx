@@ -36,26 +36,28 @@ export default function ProfilePage() {
 				}}
 			/>
 			<Typography sx={{ marginBottom: "40px" }}>{user.username}</Typography>
-			{recipes === null ? (
-				<CircularProgress />
-			) : recipes.length === 0 ? (
-				<Typography>You don't have recipes</Typography>
-			) : (
-				recipes.map((recipe, index) => {
-					return (
-						<Recipe
-							userId={recipe.user.id}
-							recipeId={recipe.id}
-							key={index}
-							image={recipe.image}
-							title={recipe.title}
-							avatar={recipe.user.avatar}
-							username={recipe.user.username}
-							rating={recipe.ratings.ratingAVG}
-						/>
-					);
-				})
-			)}
+			<RecipesContainer>
+				{recipes === null ? (
+					<CircularProgress />
+				) : recipes.length === 0 ? (
+					<Typography>You don't have recipes</Typography>
+				) : (
+					recipes.map((recipe, index) => {
+						return (
+							<Recipe
+								userId={recipe.user.id}
+								recipeId={recipe.id}
+								key={index}
+								image={recipe.image}
+								title={recipe.title}
+								avatar={recipe.user.avatar}
+								username={recipe.user.username}
+								rating={recipe.ratings.ratingAVG}
+							/>
+						);
+					})
+				)}
+			</RecipesContainer>
 			<AlertRecipeDialog setRecipes={setRecipes} />
 		</Wrapper>
 	);
@@ -67,4 +69,19 @@ const Wrapper = styled(Box)`
 	${({ theme }) =>
 		theme.mixins.flexbox("column", "flex-start", "center", "0px")}
 	background-color: #ffffff;
+`;
+
+const RecipesContainer = styled(Box)`
+	width: 100%;
+	${({ theme }) => theme.mixins.flexbox("column", "start", "center", "0px")}
+
+	&:nth-child(2) {
+		margin-top: 100px;
+	}
+
+	@media (min-width: 1000px) {
+		width: 70%;
+		${({ theme }) => theme.mixins.flexbox("row", "center", "center", "30px")}
+		flex-wrap: wrap;
+	}
 `;

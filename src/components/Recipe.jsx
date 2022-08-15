@@ -32,6 +32,7 @@ export default function Recipe({
 						setIsAlertOpen(true);
 						setDeleteEntityId(recipeId);
 					}}
+					sx={{ cursor: "pointer" }}
 				/>
 			) : (
 				<></>
@@ -75,7 +76,7 @@ export default function Recipe({
 }
 
 const Wrapper = styled(Box)`
-	width: 90%;
+	width: 330px;
 	${({ theme }) =>
 		theme.mixins.flexbox("column", "center", "flex-start", "0px")};
 `;
@@ -87,9 +88,7 @@ const Container = styled(Box)`
 	cursor: pointer;
 	margin-bottom: 30px;
 	${({ theme }) => theme.mixins.flexbox("column", "flex-end", "center", "0px")}
-	&:nth-child(1) {
-		margin-top: 100px;
-	}
+
 	background-image: url(${(props) => props.image});
 	background-repeat: no-repeat;
 	background-size: cover;

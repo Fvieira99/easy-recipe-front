@@ -24,26 +24,28 @@ export default function MainPage() {
 	return (
 		<Wrapper>
 			<Header />
-
-			{recipes === null ? (
-				<CircularProgress />
-			) : recipes.length > 0 ? (
-				recipes.map((recipe, index) => {
-					return (
-						<Recipe
-							recipeId={recipe.id}
-							key={index}
-							image={recipe.image}
-							title={recipe.title}
-							avatar={recipe.user.avatar}
-							username={recipe.user.username}
-							rating={recipe.ratings.ratingAVG}
-						/>
-					);
-				})
-			) : (
-				<h1>Ainda não há receitas criadas</h1>
-			)}
+			<RecipesContainer>
+				{recipes === null ? (
+					<CircularProgress />
+				) : recipes.length > 0 ? (
+					recipes.map((recipe, index) => {
+						return (
+							<Recipe
+								id="recipe"
+								recipeId={recipe.id}
+								key={index}
+								image={recipe.image}
+								title={recipe.title}
+								avatar={recipe.user.avatar}
+								username={recipe.user.username}
+								rating={recipe.ratings.ratingAVG}
+							/>
+						);
+					})
+				) : (
+					<h1>Ainda não há receitas criadas</h1>
+				)}
+			</RecipesContainer>
 
 			<Footer page={page} setPage={setPage} />
 		</Wrapper>
@@ -57,5 +59,20 @@ const Wrapper = styled(Box)`
 	h1 {
 		margin-top: 100px;
 		margin-bottom: 20px;
+	}
+`;
+
+const RecipesContainer = styled(Box)`
+	width: 100%;
+	${({ theme }) => theme.mixins.flexbox("column", "start", "center", "0px")}
+
+	&:nth-child(2) {
+		margin-top: 100px;
+	}
+
+	@media (min-width: 1000px) {
+		width: 70%;
+		${({ theme }) => theme.mixins.flexbox("row", "center", "center", "30px")}
+		flex-wrap: wrap;
 	}
 `;
