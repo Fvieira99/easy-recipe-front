@@ -1,9 +1,7 @@
 import axios from "axios";
 
-// https://east-eating.herokuapp.com
-
 const API = axios.create({
-	baseURL: "http://localhost:5000",
+	baseURL: "https://easy-eating-app.herokuapp.com/",
 });
 
 function getConfig(token) {
