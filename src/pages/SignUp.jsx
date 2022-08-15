@@ -117,7 +117,12 @@ export default function SignUp() {
 						),
 					}}
 				/>
-				<FormButton variant="contained" boxShadow={2} type="submit">
+				<FormButton
+					variant="contained"
+					boxShadow={2}
+					type="submit"
+					disabled={isLoading}
+				>
 					Create Account
 				</FormButton>
 				<FormLink text="Already Have an Account? Sign In!" url="/signin" />

@@ -34,6 +34,7 @@ export default function SignIn() {
 	}
 
 	async function login() {
+		setIsLoading(true);
 		try {
 			const { data } = await apiService.signIn(userInfo);
 
@@ -66,6 +67,7 @@ export default function SignIn() {
 				}}
 			>
 				<FormInput
+					disabled={isLoading}
 					type="email"
 					variant="filled"
 					label="email"
@@ -74,6 +76,7 @@ export default function SignIn() {
 					onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
 				/>
 				<FormInput
+					disabled={isLoading}
 					required
 					variant="filled"
 					label="password"
@@ -97,7 +100,12 @@ export default function SignIn() {
 						),
 					}}
 				/>
-				<FormButton type="submit" variant="contained">
+				<FormButton
+					type="submit"
+					variant="contained"
+					disabled={isLoading}
+					boxShadow={2}
+				>
 					Sign In
 				</FormButton>
 				<FormLink text="You dont have an account yet? Sign Up!" url="/" />

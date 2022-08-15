@@ -1,4 +1,4 @@
-import { Avatar, Box, Chip, Rating, styled, Typography } from "@mui/material";
+import { Avatar, Box, Rating, styled, Typography } from "@mui/material";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 
 import { useContext } from "react";

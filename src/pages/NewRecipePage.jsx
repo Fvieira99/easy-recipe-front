@@ -80,7 +80,7 @@ export default function NewRecipePage() {
 			await apiService.createRecipe(recipe, user.token);
 			setIsLoading(false);
 
-			navigate("/");
+			navigate("/main");
 		} catch (error) {
 			setIsLoading(false);
 			console.log(error);
