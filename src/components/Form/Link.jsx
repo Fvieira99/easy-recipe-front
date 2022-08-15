@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function FormLink({ text, url }) {
 	const navigate = useNavigate();
-	console.log(url);
 	return (
 		<StyledLink component="span" onClick={() => navigate(`${url}`)}>
 			{text}
