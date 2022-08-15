@@ -60,7 +60,7 @@ export default function RecipePage() {
 				(rating) => rating.user.id === user.userId
 			);
 
-			if (userRating.length > 0) {
+			if (userRating.length > 0 || recipe.user.id === user.userId) {
 				setAlreadyHasRating(true);
 			}
 		}
