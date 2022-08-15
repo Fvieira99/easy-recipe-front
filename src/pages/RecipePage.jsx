@@ -7,9 +7,8 @@ import {
 	Avatar,
 	Chip,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 import { apiService } from "../services/API";
 
 import Header from "../components/Header";
@@ -17,6 +16,7 @@ import Ingredient from "../components/Ingredient";
 import AddRating from "../components/Recipe/AddRating";
 import RecipeRating from "../components/Recipe/RecipeRating";
 import AlertRatingDialog from "../components/AlertRatingDialog";
+import { UserContext } from "../contexts/UserContext";
 
 export default function RecipePage() {
 	const [recipe, setRecipe] = useState(null);
@@ -30,18 +30,18 @@ export default function RecipePage() {
 		ratingsCount: "",
 	});
 
-	const { token, userId } = useAuth();
+	const { user } = useContext(UserContext);
 
 	const { recipeId } = useParams();
 
 	useEffect(() => {
 		async function fetchData() {
-			const response = await apiService.getRecipeById(recipeId, token);
+			const response = await apiService.getRecipeById(recipeId, user.token);
 			setRecipe(response.data);
 		}
 
 		fetchData();
-	}, [token, recipeId]);
+	}, [user.token, recipeId]);
 
 	useEffect(() => {
 		if (recipe) {
@@ -57,7 +57,7 @@ export default function RecipePage() {
 	useEffect(() => {
 		if (recipe) {
 			const userRating = recipe.ratings.recipeRatings.filter(
-				(rating) => rating.user.id === userId
+				(rating) => rating.user.id === user.userId
 			);
 
 			if (userRating.length > 0) {

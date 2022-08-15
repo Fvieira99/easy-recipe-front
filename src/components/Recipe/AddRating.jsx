@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useContext, useState } from "react";
 import { LoadingContext } from "../../contexts/LoadingContext";
-import useAuth from "../../hooks/useAuth";
+import { UserContext } from "../../contexts/UserContext";
 import { apiService } from "../../services/API";
 
 import Form from "../Form";
@@ -22,19 +22,21 @@ export default function AddRating({ recipeId, setRecipe, alreadyHasRating }) {
 
 	const { isLoading, setIsLoading } = useContext(LoadingContext);
 
-	const { token } = useAuth();
+	const { user } = useContext(UserContext);
 
 	async function handleSubmit(e) {
 		e.preventDefault();
+		setIsLoading(true);
 		try {
 			setIsLoading(true);
-			await apiService.createRating({ ...rating, recipeId }, token);
-			const response = await apiService.getRecipeById(recipeId, token);
+			await apiService.createRating({ ...rating, recipeId }, user.token);
+			const response = await apiService.getRecipeById(recipeId, user.token);
 			setRecipe(response.data);
 			setIsLoading(false);
 			setRating({ rating: 0, comment: "" });
 		} catch (error) {
 			console.log(error);
+			alert(`${error.response.statusText} ${error.response.data}`);
 			setIsLoading(false);
 		}
 	}
@@ -71,7 +73,7 @@ export default function AddRating({ recipeId, setRecipe, alreadyHasRating }) {
 				variant="contained"
 				sx={{ textTransform: "none", marginBottom: "20px" }}
 			>
-				{isLoading ? <CircularProgress /> : "Add recipe"}
+				{isLoading ? <CircularProgress /> : "Add rating"}
 			</Button>
 		</Form>
 	);

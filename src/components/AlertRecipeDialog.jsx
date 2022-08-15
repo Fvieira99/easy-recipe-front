@@ -29,7 +29,7 @@ export default function AlertRecipeDialog({ setRecipes }) {
 
 	async function handleDelete() {
 		setIsLoading(true);
-		console.log(user.token);
+
 		try {
 			if (deleteEntityId !== null) {
 				await apiService.deleteRecipe(deleteEntityId, user.token);

@@ -16,7 +16,6 @@ export default function ProfilePage() {
 	useEffect(() => {
 		async function fetchData() {
 			const response = await apiService.getUserRecipes(user.token);
-			console.log(response.data);
 
 			setRecipes(response.data);
 		}

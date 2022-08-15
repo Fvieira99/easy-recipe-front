@@ -34,7 +34,7 @@ export default function SearchDashboard({
 					debouncedRecipe,
 					user.token
 				);
-				console.log(response);
+
 				setRecipes(response.data);
 			} else {
 				setRecipes([]);

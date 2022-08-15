@@ -87,7 +87,7 @@ const Container = styled(Box)`
 	cursor: pointer;
 	margin-bottom: 30px;
 	${({ theme }) => theme.mixins.flexbox("column", "flex-end", "center", "0px")}
-	&:nth-child(3) {
+	&:nth-child(1) {
 		margin-top: 100px;
 	}
 	background-image: url(${(props) => props.image});

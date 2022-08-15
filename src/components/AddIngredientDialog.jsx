@@ -48,7 +48,6 @@ export default function AddIngredientDialog({
 			(item) => ingredient.name === item.name
 		);
 
-		console.log(filteredIngredient);
 		return filteredIngredient.length;
 	}
 
